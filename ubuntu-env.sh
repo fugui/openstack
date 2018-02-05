@@ -1,6 +1,81 @@
-apt install software-properties-common
-add-apt-repository cloud-archive:pike
-apt update 
-apt dist-upgrade
-apt install python-openstackclient
-apt install mariadb-server python-pymysql
+#!/bin/sh
+
+apt install -y software-properties-common
+echo $?
+
+add-apt-repository -y cloud-archive:pike
+
+apt -y update
+apt -y dist-upgrade
+apt install -y python-openstackclient
+apt install -y mariadb-server python-pymysql
+
+# install message queue
+apt install -y rabbitmq-server
+rabbitmqctl add_user openstack RABBIT_PASS
+rabbitmqctl set_permissions openstack ".*" ".*" ".*"
+
+
+# install memcache
+apt install -y memcached python-memcache
+sed -i -e "s/-l 127.0.0.1/-l ${HW_CONTROLLER_IP}/g"  /etc/memcached.conf
+service memcached restart
+
+#install etcd
+groupadd --system etcd
+useradd --home-dir "/var/lib/etcd" --system  --shell /bin/false  -g etcd  etcd
+mkdir -p /etc/etcd
+chown etcd:etcd /etc/etcd
+mkdir -p /var/lib/etcd
+chown etcd:etcd /var/lib/etcd
+export ETCD_VER=v3.2.7
+rm -rf /tmp/etcd && mkdir -p /tmp/etcd
+curl -L https://github.com/coreos/etcd/releases/download/${ETCD_VER}/etcd-${ETCD_VER}-linux-amd64.tar.gz -o /tmp/etcd-${ETCD_VER}-linux-amd64.tar.gz
+tar xzvf /tmp/etcd-${ETCD_VER}-linux-amd64.tar.gz -C /tmp/etcd --strip-components=1
+cp /tmp/etcd/etcd /usr/bin/etcd
+cp /tmp/etcd/etcdctl /usr/bin/etcdctl
+cat > /etc/etcd/etcd.conf.yml <<EOF
+name: controller
+data-dir: /var/lib/etcd
+initial-cluster-state: 'new'
+initial-cluster-token: 'etcd-cluster-01'
+initial-cluster: controller=http://${HW_CONTROLLER_IP}:2380
+initial-advertise-peer-urls: http://${HW_CONTROLLER_IP}:2380
+advertise-client-urls: http://${HW_CONTROLLER_IP}:2379
+listen-peer-urls: http://0.0.0.0:2380
+listen-client-urls: http://${HW_CONTROLLER_IP}:2379
+EOF
+
+cat > /lib/systemd/system/etcd.service <<EOF
+[Unit]
+After=network.target
+Description=etcd - highly-available key value store
+
+[Service]
+LimitNOFILE=65536
+Restart=on-failure
+Type=notify
+ExecStart=/usr/bin/etcd --config-file /etc/etcd/etcd.conf.yml
+User=etcd
+
+[Install]
+WantedBy=multi-user.target
+EOF
+systemctl enable etcd
+systemctl start etcd
+
+
+cat >  /etc/mysql/mariadb.conf.d/99-openstack.cnf <<EOF
+[mysqld]
+bind-address = ${HW_CONTROLLER_IP}
+
+default-storage-engine = innodb
+innodb_file_per_table = on
+max_connections = 4096
+collation-server = utf8_general_ci
+character-set-server = utf8
+
+EOF
+
+service mysql restart
+mysql_secure_installation
