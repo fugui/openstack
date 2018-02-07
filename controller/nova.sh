@@ -42,3 +42,5 @@ service nova-consoleauth restart
 service nova-scheduler restart
 service nova-conductor restart
 service nova-novncproxy restart
+
+nova-manage cell_v2 simple_cell_setup
