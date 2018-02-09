@@ -1,7 +1,7 @@
 #!/bin/sh
 
 INSTANCE_NAME=$1
-VOLUME_ID=`cinder create --display-name ${INSTANCE_NAME} 10 | grep -sw id | awk '{ print $4 }'`
+VOLUME_ID=`cinder create --display-name ${INSTANCE_NAME} 30 | grep -sw id | awk '{ print $4 }'`
 HOSTNAME_LVM=`cinder show $VOLUME_ID | grep "os-vol-host-attr:host" | awk '{print $4}'`
 
 echo $VOLUME_ID  at $HOSTNAME_LVM
@@ -13,7 +13,7 @@ if [ ${#ADDR[@]} -eq 2 ]; then
     HOSTNAME=${ADDR[0]}
 
     openstack server create --flavor CASCCE   \
-         --image a37419e2-b8b6-4adc-bdfc-e057dd4fa4fd \
+         --image 5a2d60da-04f1-4890-b049-c2e40c946551 \
          --block-device source=$VOLUME_ID \
          --key-name cas \
          --availability-zone nova:dsde06 \
