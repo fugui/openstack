@@ -20,7 +20,7 @@ sed -i -e 's/#auth_url = <None>/auth_url = http:\/\/controller:35357\nauth_type 
 
 
 
-sed -i -e '/#type_drivers/a type_drivers = flat,vlan,vxlan\tenant_network_types = vxlan\nmechanism_drivers = linuxbridge,l2population\nextension_drivers = port_security' /etc/neutron/plugins/ml2/ml2_conf.ini
+sed -i -e '/#type_drivers/a type_drivers = flat,vlan,vxlan\ntenant_network_types = vxlan\nmechanism_drivers = linuxbridge,l2population\nextension_drivers = port_security' /etc/neutron/plugins/ml2/ml2_conf.ini
 sed -i -e '/#flat_networks/a flat_networks = provider' /etc/neutron/plugins/ml2/ml2_conf.ini
 sed -i -e '/\[ml2_type_vxlan]/a vni_ranges = 1:1000' /etc/neutron/plugins/ml2/ml2_conf.ini
 sed -i -e 's/#enable_ipset = true/enable_ipset = true/g' /etc/neutron/plugins/ml2/ml2_conf.ini
