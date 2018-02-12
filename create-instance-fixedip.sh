@@ -1,0 +1,2 @@
+openstack server create --flavor CAS2U16G  --image 086a0782-2e4e-4d13-9763-fcbfac882cbf --nic net-id="provider",v4-fixed-ip="10.122.253.113" --security-group 486205fb-9e41-4ebd-9f64-a0deaf8bf93d --key-name cas CAS-RUNTIME-2
+openstack server create --flavor CAS2U16G  --image cas-runtime-1 --nic net-id="provider",v4-fixed-ip="10.122.253.118" --security-group 486205fb-9e41-4ebd-9f64-a0deaf8bf93d --key-name cas CAS-RUNTIME-1
