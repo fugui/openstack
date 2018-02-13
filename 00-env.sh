@@ -19,6 +19,9 @@ export RABBIT_PASS=messagequeue         #Password of RabbitMQ user openstack
 export CONTROLLER_IP=192.168.10.187     #the ip address of controller
 export CONTROLLER_NETWORK=enp129s0f0    #the network card device name
 
+export COMPUTE_IP=192.168.10.186
+export COMPUTE_NETWORK=enp129s0f0       #the network card device name
+
 export NETWORK_MODE=OVS                 #Network mode, PROVIDER(Provider Network) or OVS (Open vSwitch Self Service Network)
 
 HOSTSOK=`grep -c controller /etc/hosts`
