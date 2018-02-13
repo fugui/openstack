@@ -26,25 +26,37 @@ export NETWORK_MODE=OVS                 #Network mode, PROVIDER(Provider Network
 #CINDER_PASS	Password of Block Storage service user cinder
 
 echo "00 Setup the local environment...."
-#apt-get update
-#apt-get -y upgrade
+apt-get update
+apt-get -y upgrade
 
-#source ./00-ntp-controller.sh
+source ./00-ntp-controller.sh
 
-#source ./01-ubuntu-env.sh
+source ./01-ubuntu-env.sh
 
-#source ./03-keystone.sh
+source ./03-keystone.sh
 
-#source ../admin-openrc
+source ../admin-openrc
 
-#source ./04-glance.sh
+source ./04-glance.sh
 
-#source ./05-nova.sh
-
-source ./node/02-nova-client.sh
+source ./05-nova.sh
 
 source ./controller/051-nove-add-node.sh
 
-#source ./06-neutron-self.sh
+source ./06-neutron-self.sh
 
-#source ./07-horizon.sh
+source ./07-horizon.sh
+
+echo "Verify the installation...."
+
+openstack service list
+
+openstack image list
+
+openstack catalog list
+
+openstack compute service list
+
+nova-status upgrade check
+
+openstack network agent list
