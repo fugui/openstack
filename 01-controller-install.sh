@@ -36,3 +36,5 @@ openstack catalog list
 openstack compute service list
 nova-status upgrade check
 openstack network agent list
+
+echo "Please reboot your compute, then visit:  http://${CONTROLLER_IP}/horizon/ to manager your openstack. \n Enjoy it. Thanks."
