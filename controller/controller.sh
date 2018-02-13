@@ -30,4 +30,11 @@ echo "00 Setup the local environment...."
 
 #source ./01-ubuntu-env.sh
 
-source ./03-keystone.sh
+#source ./03-keystone.sh
+
+source ../admin-openrc
+
+source ./04-glance.sh
+
+source ./05-nova.sh
+
