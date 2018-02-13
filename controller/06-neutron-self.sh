@@ -1,3 +1,5 @@
+#!/bin/bash
+
 openstack user create --domain default --password ${NEUTRON_PASS} neutron
 openstack role add --project service --user neutron admin
 openstack service create --name neutron --description "OpenStack Networking" network
