@@ -105,4 +105,4 @@ EOF
 
 mysql -u root < 02-openstack.sql
 
-mysql_secure_installation
+# mysql_secure_installation
