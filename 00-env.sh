@@ -20,3 +20,12 @@ export CONTROLLER_IP=192.168.10.187     #the ip address of controller
 export CONTROLLER_NETWORK=enp129s0f0    #the network card device name
 
 export NETWORK_MODE=OVS                 #Network mode, PROVIDER(Provider Network) or OVS (Open vSwitch Self Service Network)
+
+HOSTSOK=`grep -c controller /etc/hosts`
+echo $HOSTSOK
+
+if [ "$HOSTSOK" = 0 ]; then 
+cat >> /etc/hosts <<EOF
+${CONTROLLER_IP} controller
+EOF
+fi
