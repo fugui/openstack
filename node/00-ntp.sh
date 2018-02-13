@@ -1,7 +1,12 @@
-apt install -y chrony
+apt install -y ntp
 
-sed -i -e 's/pool 2\.debian\.pool\.ntp\.org offline iburst/server controller iburst/g' /etc/chrony/chrony.conf
+sed -i -e '18,24 s/^/#/g' /etc/ntp.conf
+sed -i -e '17 a server controller iburst' /etc/ntp.conf
 
-service chrony restart
+service ntp stop
+timedatectl set-ntp yes
+ntpd -gq
+service ntp start
 
-chronyc sources
+timedatectl
+ntpq -p
