@@ -14,23 +14,26 @@ export NEUTRON_PASS=neutronuser         #Password of Networking service user neu
 export NOVA_DBPASS=novadb               #Database password for Compute service
 export NOVA_PASS=novauser               #Password of Compute service user nova
 export PLACEMENT_PASS=placementpass     #Password of the Placement service user placement
+export RABBIT_PASS=messagequeue         #Password of RabbitMQ user openstack
 
 export CONTROLLER_IP=192.168.10.187     #the ip address of controller
 export CONTROLLER_NETWORK=enp129s0f0    #the network card device name
+
+export NETWORK_MODE=OVS                 #Network mode, PROVIDER(Provider Network) or OVS (Open vSwitch Self Service Network)
 
 #now we don't install cinder service.
 #CINDER_DBPASS	Database password for the Block Storage service
 #CINDER_PASS	Password of Block Storage service user cinder
 
 echo "00 Setup the local environment...."
-#apt-get update
-#apt-get -y upgrade
+apt-get update
+apt-get -y upgrade
 
-#source ./00-ntp-controller.sh
+source ./00-ntp-controller.sh
 
-#source ./01-ubuntu-env.sh
+source ./01-ubuntu-env.sh
 
-#source ./03-keystone.sh
+source ./03-keystone.sh
 
 source ../admin-openrc
 
@@ -38,3 +41,6 @@ source ./04-glance.sh
 
 source ./05-nova.sh
 
+source ./06-neutron-self.sh
+
+source ./07-horizon.sh
