@@ -1,3 +1,5 @@
+#!/bin/bash
+
 apt install -y keystone  apache2 libapache2-mod-wsgi
 
 sed -i -e "s/connection = sqlite:\/\/\/\/var\/lib\/keystone\/keystone.db/connection = mysql+pymysql:\/\/keystone:${KEYSTONE_DBPASS}@controller\/keystone/g"  /etc/keystone/keystone.conf
