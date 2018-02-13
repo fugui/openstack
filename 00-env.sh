@@ -29,3 +29,14 @@ cat >> /etc/hosts <<EOF
 ${CONTROLLER_IP} controller
 EOF
 fi
+
+NETWORK_OK=`grep ${CONTROLLER_NETWORK} /etc/network/interfaces`
+echo $NETWORK_OK
+if [ -n "$NETWORK_OK" ]; then
+cat >> /etc/network/interfaces <<EOF
+auto ${CONTROLLER_NETWORK}
+iface ${CONTROLLER_NETWORK} inet manual
+  up ip link set dev $$IFACE up
+  down ip link set dev $$IFACE down
+EOF
+fi
