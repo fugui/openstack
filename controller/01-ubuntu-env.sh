@@ -12,13 +12,13 @@ apt install -y mariadb-server python-pymysql
 
 # install message queue
 apt install -y rabbitmq-server
-rabbitmqctl add_user openstack RABBIT_PASS
+rabbitmqctl add_user openstack ${RABBIT_PASS}
 rabbitmqctl set_permissions openstack ".*" ".*" ".*"
 
 
 # install memcache
 apt install -y memcached python-memcache
-sed -i -e "s/-l 127.0.0.1/-l ${HW_CONTROLLER_IP}/g"  /etc/memcached.conf
+sed -i -e "s/-l 127.0.0.1/-l ${CONTROLLER_IP}/g"  /etc/memcached.conf
 service memcached restart
 
 #install etcd
@@ -39,11 +39,11 @@ name: controller
 data-dir: /var/lib/etcd
 initial-cluster-state: 'new'
 initial-cluster-token: 'etcd-cluster-01'
-initial-cluster: controller=http://${HW_CONTROLLER_IP}:2380
-initial-advertise-peer-urls: http://${HW_CONTROLLER_IP}:2380
-advertise-client-urls: http://${HW_CONTROLLER_IP}:2379
+initial-cluster: controller=http://${CONTROLLER_IP}:2380
+initial-advertise-peer-urls: http://${CONTROLLER_IP}:2380
+advertise-client-urls: http://${CONTROLLER_IP}:2379
 listen-peer-urls: http://0.0.0.0:2380
-listen-client-urls: http://${HW_CONTROLLER_IP}:2379
+listen-client-urls: http://${CONTROLLER_IP}:2379
 EOF
 
 cat > /lib/systemd/system/etcd.service <<EOF
@@ -67,7 +67,7 @@ systemctl start etcd
 
 cat >  /etc/mysql/mariadb.conf.d/99-openstack.cnf <<EOF
 [mysqld]
-bind-address = ${HW_CONTROLLER_IP}
+bind-address = ${CONTROLLER_IP}
 
 default-storage-engine = innodb
 innodb_file_per_table = on
@@ -78,4 +78,31 @@ character-set-server = utf8
 EOF
 
 service mysql restart
+
+cat > 02-openstack.sql <<EOF
+CREATE DATABASE keystone;
+GRANT ALL PRIVILEGES ON keystone.* TO 'keystone'@'localhost' IDENTIFIED BY '${KEYSTONE_DBPASS}';
+GRANT ALL PRIVILEGES ON keystone.* TO 'keystone'@'%' IDENTIFIED BY '${KEYSTONE_DBPASS}';
+
+CREATE DATABASE glance;
+GRANT ALL PRIVILEGES ON glance.* TO 'glance'@'localhost' IDENTIFIED BY '${GLANCE_DBPASS}';
+GRANT ALL PRIVILEGES ON glance.* TO 'glance'@'%'  IDENTIFIED BY '${GLANCE_DBPASS}';
+
+CREATE DATABASE nova_api;
+CREATE DATABASE nova;
+CREATE DATABASE nova_cell0;
+GRANT ALL PRIVILEGES ON nova_api.* TO 'nova'@'localhost'  IDENTIFIED BY '${NOVA_DBPASS}';
+GRANT ALL PRIVILEGES ON nova_api.* TO 'nova'@'%' IDENTIFIED BY '${NOVA_DBPASS}';
+GRANT ALL PRIVILEGES ON nova.* TO 'nova'@'localhost'  IDENTIFIED BY '${NOVA_DBPASS}';
+GRANT ALL PRIVILEGES ON nova.* TO 'nova'@'%' IDENTIFIED BY '${NOVA_DBPASS}';
+GRANT ALL PRIVILEGES ON nova_cell0.* TO 'nova'@'localhost' IDENTIFIED BY '${NOVA_DBPASS}';
+GRANT ALL PRIVILEGES ON nova_cell0.* TO 'nova'@'%' IDENTIFIED BY '${NOVA_DBPASS}';
+
+CREATE DATABASE neutron;
+GRANT ALL PRIVILEGES ON neutron.* TO 'neutron'@'localhost' IDENTIFIED BY '${NEUTRON_DBPASS}';
+GRANT ALL PRIVILEGES ON neutron.* TO 'neutron'@'%' IDENTIFIED BY '${NEUTRON_DBPASS}';
+EOF
+
+mysql -u root < 02-openstack.sql
+
 mysql_secure_installation
