@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 apt install -y software-properties-common
 echo $?
