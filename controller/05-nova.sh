@@ -10,8 +10,7 @@ openstack service create --name placement --description "Placement API" placemen
 openstack endpoint create --region RegionOne placement public http://controller:8778
 openstack endpoint create --region RegionOne placement internal http://controller:8778
 openstack endpoint create --region RegionOne placement admin http://controller:8778
-apt install -y nova-api nova-conductor nova-consoleauth  nova-novncproxy nova-scheduler nova-placement-api
-
+apt install -y nova-api nova-conductor nova-consoleauth  nova-novncproxy nova-scheduler nova-placement-api nova-compute
 
 sed  -i -e "s/connection = sqlite:\/\/\/\/var\/lib\/nova\/nova_api.sqlite/connection = mysql+pymysql:\/\/nova:${NOVA_DBPASS}@controller\/nova_api/g" /etc/nova/nova.conf
 sed  -i -e "s/connection = sqlite:\/\/\/\/var\/lib\/nova\/nova.sqlite/connection = mysql+pymysql:\/\/nova:${NOVA_DBPASS}@controller\/nova/g" /etc/nova/nova.conf
@@ -22,7 +21,7 @@ sed  -i -e "5 a firewall_driver = nova.virt.firewall.NoopFirewallDriver" /etc/no
 sed  -i -e "s/#auth_strategy = keystone/auth_strategy = keystone/g" /etc/nova/nova.conf
 sed  -i -e "s/#auth_uri = <None>/auth_uri = http:\/\/controller:5000\nauth_url = http:\/\/controller:35357\nmemcached_servers = controller:11211\nauth_type = password\nproject_domain_name = default\nuser_domain_name = default\nproject_name = service\nusername = nova\npassword = ${NOVA_PASS}/g" /etc/nova/nova.conf
 
-sed  -i -e 's/^\[vnc]/\[vnc]\nenabled = true\nvncserver_listen = $my_ip\nvncserver_proxyclient_address = $my_ip/g'  /etc/nova/nova.conf
+sed  -i -e 's/^\[vnc]/\[vnc]\nenabled = true\nvncserver_listen = $my_ip\nvncserver_proxyclient_address = $my_ip\nvncserver_listen = 0.0.0.0\nnovncproxy_base_url = http://controller:6080/vnc_auto.html/g'  /etc/nova/nova.conf
 sed  -i -e "s/^\[glance]/[glance]\napi_servers = http:\/\/controller:9292/g" /etc/nova/nova.conf
 sed  -i -e 's/^\[oslo_concurrency]/[oslo_concurrency]\nlock_path = \/var\/lib\/nova\/tmp/g' /etc/nova/nova.conf
 
@@ -42,5 +41,6 @@ service nova-consoleauth restart
 service nova-scheduler restart
 service nova-conductor restart
 service nova-novncproxy restart
+service nova-compute restart
 
 nova-manage cell_v2 simple_cell_setup
