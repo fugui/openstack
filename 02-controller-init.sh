@@ -16,7 +16,7 @@ openstack network create selfservice
 
 openstack subnet create --network selfservice \
   --dns-nameserver 10.122.150.81 --gateway 172.25.0.1 \
-  --subnet-range 172.16.0.0/16 selfservice
+  --subnet-range 172.25.0.0/16 selfservice
   
 openstack router create router
 
