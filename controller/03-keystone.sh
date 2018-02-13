@@ -31,7 +31,7 @@ openstack user create --domain default --password ${DEMO_PASS} demo
 openstack role create user
 openstack role add --project demo --user demo user
 
-cat > ../admin-openrc <<EOF
+cat > ./admin-openrc <<EOF
 export OS_PROJECT_DOMAIN_NAME=Default
 export OS_USER_DOMAIN_NAME=Default
 export OS_PROJECT_NAME=admin
@@ -42,7 +42,7 @@ export OS_IDENTITY_API_VERSION=3
 export OS_IMAGE_API_VERSION=2
 EOF
 
-cat > ../demo-openrc <<EOF
+cat > ./demo-openrc <<EOF
 export OS_PROJECT_DOMAIN_NAME=Default
 export OS_USER_DOMAIN_NAME=Default
 export OS_PROJECT_NAME=demo
