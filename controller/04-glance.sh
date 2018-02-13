@@ -1,3 +1,5 @@
+#!/bin/bash
+
 openstack user create --domain default --password ${GLANCE_PASS} glance
 openstack role add --project service --user glance admin
 openstack service create --name glance --description "OpenStack Image" image
