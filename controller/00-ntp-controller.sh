@@ -1,3 +1,5 @@
+#!/bin/bash
+
 apt install -y ntp
 
 sed -i -e '18,24 s/^/#/g' /etc/ntp.conf
