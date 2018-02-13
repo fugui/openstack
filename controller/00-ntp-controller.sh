@@ -1,7 +1,12 @@
-apt install -y chrony
+apt install -y ntp
 
+sed -i -e '18,24 s/^/#/g' /etc/ntp.conf
+sed -i -e '17 a server szxntp01-in.huawei.com iburst\nserver szxntp02-in.huawei.com iburst' /etc/ntp.conf
 
-sed -i -e "s/pool 2.debian.pool.ntp.org offline iburst/server szxntp01-in.huawei.com iburst\nserver szxntp02-in.huawei.com iburst/g"  /etc/chrony/chrony.conf
-sed -i -e "67 a allow 0.0.0.0/0" /etc/chrony/chrony.conf
+service ntp stop
+timedatectl set-ntp yes
+ntpd -gq
+service ntp start
 
-service chrony restart
+timedatectl
+ntpq -p
