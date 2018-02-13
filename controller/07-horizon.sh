@@ -18,6 +18,6 @@ sed -i -e "/#OPENSTACK_API_VERSIONS/a OPENSTACK_API_VERSIONS = {\n    \"identity
 
 sed -i -e "/^OPENSTACK_KEYSTONE_DEFAULT_DOMAIN/a OPENSTACK_KEYSTONE_DEFAULT_DOMAIN = \"Default\"" /etc/openstack-dashboard/local_settings.py
 
-sed -e -e "4 a WSGIApplicationGroup %{GLOBAL}" /etc/apache2/conf-available/openstack-dashboard.conf
+sed -i -e "4 a WSGIApplicationGroup %{GLOBAL}" /etc/apache2/conf-available/openstack-dashboard.conf
 
 service apache2 reload
