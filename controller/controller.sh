@@ -28,4 +28,6 @@ echo "00 Setup the local environment...."
 
 #source ./00-ntp-controller.sh
 
-source ./01-ubuntu-env.sh
+#source ./01-ubuntu-env.sh
+
+source ./03-keystone.sh
