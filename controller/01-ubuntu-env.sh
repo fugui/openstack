@@ -5,6 +5,10 @@ echo $?
 
 add-apt-repository -y cloud-archive:pike
 
+apt-get install software-properties-common
+apt-key adv --recv-keys --keyserver hkp://keyserver.ubuntu.com:80 0xF1656F24C74CD1D8
+add-apt-repository 'deb [arch=amd64,arm64,ppc64el] http://mirror.its.dal.ca/mariadb/repo/10.3/ubuntu bionic main'
+
 apt -y update
 apt -y dist-upgrade
 apt install -y python-openstackclient
