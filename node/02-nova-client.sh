@@ -2,7 +2,7 @@
 
 apt install -y nova-compute
 
-sed -i -e "4 a transport_url = rabbit://openstack:${RABBIT_PASS}@controller\nmy_ip=${NOVA_IP}\nuse_neutron = True\nfirewall_driver = nova.virt.firewall.NoopFirewallDriver" /etc/nova/nova.conf
+sed -i -e "4 a transport_url = rabbit://openstack:${RABBIT_PASS}@controller\nmy_ip=${COMPUTE_IP}\nuse_neutron = True\nfirewall_driver = nova.virt.firewall.NoopFirewallDriver" /etc/nova/nova.conf
 
 sed -i -e "s/#auth_strategy = keystone/auth_strategy = keystone/g" /etc/nova/nova.conf
 
