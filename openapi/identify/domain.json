@@ -68,6 +68,15 @@
                           "enabled" : {
                             "type" : "string",
                             "description" : "If set to true, domain is enabled. If set to false, domain is disabled."
+                          },
+                          "links" : {
+                            "type" : "array",
+                            "items" : "string",
+                            "description" : "The links to the domain resource."
+                          },
+                          "description" : {
+                            "type" : "string",
+                            "description" : "The description of the domain"
                           }
                         }
                       }
@@ -78,7 +87,25 @@
             }
           },
           "400" : {
-            "description" : "bad input parameter"
+            "description" : "Some content in the request was invalid"
+          },
+          "401" : {
+            "description" : "User must authenticate before making a request"
+          },
+          "403" : {
+            "description" : "Policy does not allow current user to do this operation"
+          },
+          "404" : {
+            "description" : "The requested resource could not be found"
+          },
+          "405" : {
+            "description" : "Method is not valid for this endpoint"
+          },
+          "413" : {
+            "description" : "The request is larger than the server is willing or able to process"
+          },
+          "503" : {
+            "description" : "Service is not available. This is mostly caused by service configuration errors which prevents the service from successful start up"
           }
         }
       },
