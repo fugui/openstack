@@ -27,7 +27,7 @@
     "/domains" : {
       "get" : {
         "operationId" : "getDomains",
-        "description" : "Lists all domains",
+        "summary" : "Lists all domains",
         "parameters" : [ {
           "in" : "query",
           "name" : "name",
@@ -56,61 +56,281 @@
             }
           },
           "400" : {
-            "$ref" : "#/components/responses/BadRequest"
+            "$ref" : "#/components/responses/400"
           },
           "401" : {
-            "description" : "User must authenticate before making a request"
+            "$ref" : "#/components/responses/401"
           },
           "403" : {
-            "description" : "Policy does not allow current user to do this operation"
+            "$ref" : "#/components/responses/403"
           },
           "404" : {
-            "description" : "The requested resource could not be found"
+            "$ref" : "#/components/responses/404"
           },
           "405" : {
-            "description" : "Method is not valid for this endpoint"
+            "$ref" : "#/components/responses/405"
           },
           "413" : {
-            "description" : "The request is larger than the server is willing or able to process"
+            "$ref" : "#/components/responses/413"
           },
           "503" : {
-            "description" : "Service is not available. This is mostly caused by service configuration errors which prevents the service from successful start up"
+            "$ref" : "#/components/responses/503"
           }
         }
       },
       "post" : {
-        "tags" : [ "admins" ],
-        "summary" : "adds an inventory item",
-        "operationId" : "addInventory",
-        "description" : "Adds an item to the system",
-        "responses" : {
-          "201" : {
-            "description" : "item created"
-          },
-          "400" : {
-            "description" : "invalid input, object invalid"
-          },
-          "409" : {
-            "description" : "an existing item already exists"
-          }
-        },
+        "summary" : "Create domain",
+        "operationId" : "addDomain",
         "requestBody" : {
           "content" : {
             "application/json" : {
               "schema" : {
-                "$ref" : "#/components/schemas/DomainItem"
+                "type" : "object",
+                "properties" : {
+                  "domain" : {
+                    "$ref" : "#/components/schemas/DomainItemCreate"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses" : {
+          "201" : {
+            "$ref" : "#/components/responses/201"
+          },
+          "400" : {
+            "$ref" : "#/components/responses/400"
+          },
+          "401" : {
+            "$ref" : "#/components/responses/401"
+          },
+          "403" : {
+            "$ref" : "#/components/responses/403"
+          },
+          "404" : {
+            "$ref" : "#/components/responses/404"
+          },
+          "405" : {
+            "$ref" : "#/components/responses/405"
+          },
+          "409" : {
+            "$ref" : "#/components/responses/409"
+          },
+          "413" : {
+            "$ref" : "#/components/responses/413"
+          },
+          "415" : {
+            "$ref" : "#/components/responses/415"
+          },
+          "503" : {
+            "$ref" : "#/components/responses/503"
+          }
+        }
+      }
+    },
+    "/domains/{domain_id}" : {
+      "get" : {
+        "operationId" : "getDomain",
+        "summary" : "Show domain details",
+        "parameters" : [ {
+          "in" : "path",
+          "name" : "domain_id",
+          "description" : "The domain ID",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Request was successful",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/DomainObject"
+                }
               }
             }
           },
-          "description" : "Inventory item to add"
+          "400" : {
+            "$ref" : "#/components/responses/400"
+          },
+          "401" : {
+            "$ref" : "#/components/responses/401"
+          },
+          "403" : {
+            "$ref" : "#/components/responses/403"
+          },
+          "404" : {
+            "$ref" : "#/components/responses/404"
+          },
+          "405" : {
+            "$ref" : "#/components/responses/405"
+          },
+          "413" : {
+            "$ref" : "#/components/responses/413"
+          },
+          "503" : {
+            "$ref" : "#/components/responses/503"
+          }
+        }
+      },
+      "patch" : {
+        "operationId" : "updateDomain",
+        "summary" : "Update domain",
+        "parameters" : [ {
+          "in" : "path",
+          "name" : "domain_id",
+          "description" : "The domain ID",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "type" : "object",
+                "properties" : {
+                  "domain" : {
+                    "$ref" : "#/components/schemas/DomainItemCreate"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses" : {
+          "200" : {
+            "description" : "Request was successful",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/DomainObject"
+                }
+              }
+            }
+          },
+          "400" : {
+            "$ref" : "#/components/responses/400"
+          },
+          "401" : {
+            "$ref" : "#/components/responses/401"
+          },
+          "403" : {
+            "$ref" : "#/components/responses/403"
+          },
+          "404" : {
+            "$ref" : "#/components/responses/404"
+          },
+          "405" : {
+            "$ref" : "#/components/responses/405"
+          },
+          "409" : {
+            "$ref" : "#/components/responses/409"
+          },
+          "413" : {
+            "$ref" : "#/components/responses/413"
+          },
+          "415" : {
+            "$ref" : "#/components/responses/415"
+          },
+          "503" : {
+            "$ref" : "#/components/responses/503"
+          }
         }
       }
     }
   },
   "components" : {
     "responses" : {
-      "BadRequest" : {
+      "201" : {
+        "description" : "Resource was created and is ready to use"
+      },
+      "400" : {
         "description" : "Some content in the request was invalid",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "$ref" : "#/components/schemas/ErrorRepsonse"
+            }
+          }
+        }
+      },
+      "401" : {
+        "description" : "User must authenticate before making a request",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "$ref" : "#/components/schemas/ErrorRepsonse"
+            }
+          }
+        }
+      },
+      "403" : {
+        "description" : "Policy does not allow current user to do this operation",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "$ref" : "#/components/schemas/ErrorRepsonse"
+            }
+          }
+        }
+      },
+      "404" : {
+        "description" : "The requested resource could not be found",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "$ref" : "#/components/schemas/ErrorRepsonse"
+            }
+          }
+        }
+      },
+      "405" : {
+        "description" : "Method is not valid for this endpoint",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "$ref" : "#/components/schemas/ErrorRepsonse"
+            }
+          }
+        }
+      },
+      "409" : {
+        "description" : "This operation conflicted with another operation on this resource",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "$ref" : "#/components/schemas/ErrorRepsonse"
+            }
+          }
+        }
+      },
+      "413" : {
+        "description" : "The request is larger than the server is willing or able to process",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "$ref" : "#/components/schemas/ErrorRepsonse"
+            }
+          }
+        }
+      },
+      "415" : {
+        "description" : "The request entity has a media type which the server or resource does not support",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "$ref" : "#/components/schemas/ErrorRepsonse"
+            }
+          }
+        }
+      },
+      "503" : {
+        "description" : "Service is not available. This is mostly caused by service configuration errors which prevents the service from successful start up",
         "content" : {
           "application/json" : {
             "schema" : {
@@ -129,6 +349,14 @@
             "items" : {
               "$ref" : "#/components/schemas/DomainItem"
             }
+          }
+        }
+      },
+      "DomainObject" : {
+        "type" : "object",
+        "properties" : {
+          "domain" : {
+            "$ref" : "#/components/schemas/DomainItem"
           }
         }
       },
@@ -155,6 +383,24 @@
               "type" : "string"
             },
             "description" : "The links to the domain resource."
+          },
+          "description" : {
+            "type" : "string",
+            "description" : "The description of the domain"
+          }
+        }
+      },
+      "DomainItemCreate" : {
+        "type" : "object",
+        "properties" : {
+          "name" : {
+            "type" : "string",
+            "description" : "The name of the domain",
+            "example" : "china-mobile"
+          },
+          "enabled" : {
+            "type" : "string",
+            "description" : "If set to true, domain is enabled. If set to false, domain is disabled."
           },
           "description" : {
             "type" : "string",
