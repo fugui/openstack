@@ -1,0 +1,160 @@
+{
+  "openapi" : "3.0.0",
+  "info" : {
+    "description" : "OpenStack Identity API v3 (Domain)",
+    "version" : "3.0",
+    "title" : "OpenStack Identity API v3 (Domain)",
+    "contact" : {
+      "email" : "szfugui@gmail.com"
+    },
+    "license" : {
+      "name" : "Apache 2.0",
+      "url" : "http://www.apache.org/licenses/LICENSE-2.0.html"
+    }
+  },
+  "tags" : [ {
+    "name" : "admins",
+    "description" : "Secured Admin-only calls"
+  }, {
+    "name" : "developers",
+    "description" : "Operations available to regular developers"
+  } ],
+  "servers" : [ {
+    "description" : "Huawei Cloud IAM Service",
+    "url" : "https://iam.myhuaweicloud.com/v3"
+  } ],
+  "paths" : {
+    "/domains" : {
+      "get" : {
+        "operationId" : "getDomains",
+        "description" : "Lists all domains",
+        "parameters" : [ {
+          "in" : "query",
+          "name" : "name",
+          "description" : "Filters the response by a domain name",
+          "required" : false,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "in" : "query",
+          "name" : "enabled",
+          "description" : "If set to true, then only domains that are enabled will be returned, if set to false only that are disabled will be returned. Any value other than 0, including no value, will be interpreted as true.",
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "search results matching criteria",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "object",
+                  "properties" : {
+                    "domains" : {
+                      "type" : "array",
+                      "items" : {
+                        "type" : "object",
+                        "properties" : {
+                          "id" : {
+                            "type" : "string",
+                            "description" : "The ID of the domain"
+                          },
+                          "name" : {
+                            "type" : "string",
+                            "description" : "The name of the domain"
+                          },
+                          "enabled" : {
+                            "type" : "string",
+                            "description" : "If set to true, domain is enabled. If set to false, domain is disabled."
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "bad input parameter"
+          }
+        }
+      },
+      "post" : {
+        "tags" : [ "admins" ],
+        "summary" : "adds an inventory item",
+        "operationId" : "addInventory",
+        "description" : "Adds an item to the system",
+        "responses" : {
+          "201" : {
+            "description" : "item created"
+          },
+          "400" : {
+            "description" : "invalid input, object invalid"
+          },
+          "409" : {
+            "description" : "an existing item already exists"
+          }
+        },
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/InventoryItem"
+              }
+            }
+          },
+          "description" : "Inventory item to add"
+        }
+      }
+    }
+  },
+  "components" : {
+    "schemas" : {
+      "InventoryItem" : {
+        "type" : "object",
+        "required" : [ "id", "name", "manufacturer", "releaseDate" ],
+        "properties" : {
+          "id" : {
+            "type" : "string",
+            "format" : "uuid",
+            "example" : "d290f1ee-6c54-4b01-90e6-d701748f0851"
+          },
+          "name" : {
+            "type" : "string",
+            "example" : "Widget Adapter"
+          },
+          "releaseDate" : {
+            "type" : "string",
+            "format" : "date-time",
+            "example" : "2016-08-29T09:12:33.001Z"
+          },
+          "manufacturer" : {
+            "$ref" : "#/components/schemas/Manufacturer"
+          }
+        }
+      },
+      "Manufacturer" : {
+        "required" : [ "name" ],
+        "properties" : {
+          "name" : {
+            "type" : "string",
+            "example" : "ACME Corporation"
+          },
+          "homePage" : {
+            "type" : "string",
+            "format" : "url",
+            "example" : "https://www.acme-corp.com"
+          },
+          "phone" : {
+            "type" : "string",
+            "example" : "408-867-5309"
+          }
+        },
+        "type" : "object"
+      }
+    }
+  }
+}
