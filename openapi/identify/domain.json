@@ -241,6 +241,51 @@
             "$ref" : "#/components/responses/503"
           }
         }
+      },
+      "delete" : {
+        "operationId" : "deleteDomain",
+        "summary" : "Delete domain",
+        "parameters" : [ {
+          "in" : "path",
+          "name" : "domain_id",
+          "description" : "The domain ID",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "204" : {
+            "$ref" : "#/components/responses/204"
+          },
+          "400" : {
+            "$ref" : "#/components/responses/400"
+          },
+          "401" : {
+            "$ref" : "#/components/responses/401"
+          },
+          "403" : {
+            "$ref" : "#/components/responses/403"
+          },
+          "404" : {
+            "$ref" : "#/components/responses/404"
+          },
+          "405" : {
+            "$ref" : "#/components/responses/405"
+          },
+          "409" : {
+            "$ref" : "#/components/responses/409"
+          },
+          "413" : {
+            "$ref" : "#/components/responses/413"
+          },
+          "415" : {
+            "$ref" : "#/components/responses/415"
+          },
+          "503" : {
+            "$ref" : "#/components/responses/503"
+          }
+        }
       }
     }
   },
@@ -248,6 +293,9 @@
     "responses" : {
       "201" : {
         "description" : "Resource was created and is ready to use"
+      },
+      "204" : {
+        "description" : "The server has fulfilled the request"
       },
       "400" : {
         "description" : "Some content in the request was invalid",
