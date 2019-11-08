@@ -50,44 +50,13 @@
             "content" : {
               "application/json" : {
                 "schema" : {
-                  "type" : "object",
-                  "properties" : {
-                    "domains" : {
-                      "type" : "array",
-                      "items" : {
-                        "type" : "object",
-                        "properties" : {
-                          "id" : {
-                            "type" : "string",
-                            "description" : "The ID of the domain"
-                          },
-                          "name" : {
-                            "type" : "string",
-                            "description" : "The name of the domain"
-                          },
-                          "enabled" : {
-                            "type" : "string",
-                            "description" : "If set to true, domain is enabled. If set to false, domain is disabled."
-                          },
-                          "links" : {
-                            "type" : "array",
-                            "items" : "string",
-                            "description" : "The links to the domain resource."
-                          },
-                          "description" : {
-                            "type" : "string",
-                            "description" : "The description of the domain"
-                          }
-                        }
-                      }
-                    }
-                  }
+                  "$ref" : "#/components/schemas/Domains"
                 }
               }
             }
           },
           "400" : {
-            "description" : "Some content in the request was invalid"
+            "$ref" : "#/components/responses/BadRequest"
           },
           "401" : {
             "description" : "User must authenticate before making a request"
@@ -129,7 +98,7 @@
           "content" : {
             "application/json" : {
               "schema" : {
-                "$ref" : "#/components/schemas/InventoryItem"
+                "$ref" : "#/components/schemas/DomainItem"
               }
             }
           },
@@ -139,48 +108,72 @@
     }
   },
   "components" : {
+    "responses" : {
+      "BadRequest" : {
+        "description" : "Some content in the request was invalid",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "$ref" : "#/components/schemas/ErrorRepsonse"
+            }
+          }
+        }
+      }
+    },
     "schemas" : {
-      "InventoryItem" : {
+      "Domains" : {
         "type" : "object",
-        "required" : [ "id", "name", "manufacturer", "releaseDate" ],
         "properties" : {
-          "id" : {
-            "type" : "string",
-            "format" : "uuid",
-            "example" : "d290f1ee-6c54-4b01-90e6-d701748f0851"
-          },
-          "name" : {
-            "type" : "string",
-            "example" : "Widget Adapter"
-          },
-          "releaseDate" : {
-            "type" : "string",
-            "format" : "date-time",
-            "example" : "2016-08-29T09:12:33.001Z"
-          },
-          "manufacturer" : {
-            "$ref" : "#/components/schemas/Manufacturer"
+          "domains" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/DomainItem"
+            }
           }
         }
       },
-      "Manufacturer" : {
-        "required" : [ "name" ],
+      "DomainItem" : {
+        "type" : "object",
         "properties" : {
+          "id" : {
+            "type" : "string",
+            "description" : "The ID of the domain",
+            "example" : "4e60c818-da53-11e9-a6c2-0255ac101ec0"
+          },
           "name" : {
             "type" : "string",
-            "example" : "ACME Corporation"
+            "description" : "The name of the domain",
+            "example" : "china-mobile"
           },
-          "homePage" : {
+          "enabled" : {
             "type" : "string",
-            "format" : "url",
-            "example" : "https://www.acme-corp.com"
+            "description" : "If set to true, domain is enabled. If set to false, domain is disabled."
           },
-          "phone" : {
+          "links" : {
+            "type" : "array",
+            "items" : {
+              "type" : "string"
+            },
+            "description" : "The links to the domain resource."
+          },
+          "description" : {
             "type" : "string",
-            "example" : "408-867-5309"
+            "description" : "The description of the domain"
           }
-        },
-        "type" : "object"
+        }
+      },
+      "ErrorRepsonse" : {
+        "type" : "object",
+        "properties" : {
+          "id" : {
+            "type" : "string",
+            "description" : "Error ID"
+          },
+          "message" : {
+            "type" : "string",
+            "description" : "Error message"
+          }
+        }
       }
     }
   }
