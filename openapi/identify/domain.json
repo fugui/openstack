@@ -1,9 +1,9 @@
 {
   "openapi" : "3.0.0",
   "info" : {
-    "description" : "OpenStack Identity API v3 (Domain)",
-    "version" : "3.0",
     "title" : "OpenStack Identity API v3 (Domain)",
+    "version" : "3.0",
+    "description" : "OpenStack Identity (KeyStone) API v3 (Domain), Swagger definition for OpenAPI 3.0",
     "contact" : {
       "email" : "szfugui@gmail.com"
     },
